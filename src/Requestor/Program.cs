@@ -18,13 +18,22 @@ namespace Requestor
             {
                 var count = 3;
                 var waitHandleArray = new WaitHandle[count];
+
+                var messages = new List<Message>();
                 
-                for (int i = count - 1; i >= 0; i--)
+                for (int i = 1; i <= count; i++)
                 {
-                    var messageId = (i + 1).ToString();
-                    requestor.Send(messageId);
-                    Console.WriteLine($"Send message: {messageId}");
+                    var messageId = i.ToString();
+                    messages.Add(requestor.MessageConstructor(messageId));
+                    Console.WriteLine($"Constructed message: {messageId}");
                     // waitHandleArray[i] = requestor.ReceiveAsync();
+                }
+
+                messages.Reverse();
+
+                foreach (var message in messages)
+                {
+                    requestor.Send(message);
                 }
 
                 // Console.WriteLine("Waiting to receive...");

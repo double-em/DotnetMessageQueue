@@ -43,13 +43,19 @@ namespace Requestor
             }
         }
 
-        public void Send(string messageId)
+        public Message MessageConstructor(string message)
         {
-            Message requestMessage = new Message();
-            requestMessage.AcknowledgeType = AcknowledgeTypes.PositiveReceive | AcknowledgeTypes.PositiveArrival;
-            requestMessage.Body = messageId;
-            requestMessage.ResponseQueue = replyQueue;
-            
+            Message newMessage = new Message();
+            //requestMessage.CorrelationId = guid.ToString();
+            newMessage.AcknowledgeType = AcknowledgeTypes.PositiveReceive | AcknowledgeTypes.PositiveArrival;
+            newMessage.Body = message;
+            newMessage.ResponseQueue = replyQueue;
+
+            return newMessage;
+        }
+
+        public void Send(Message requestMessage)
+        {
             requestQueue.Send(requestMessage);
             
             Console.WriteLine("Sent        request");
